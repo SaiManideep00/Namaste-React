@@ -1,13 +1,11 @@
+import { IMAGE_URL } from "./utils/images";
 const RestaurantCard = (props) => {
   const { resData } = props;
   return (
     <div className="res-card">
       <img
         className="res-logo"
-        src={
-          "https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_660/" +
-          resData.info.cloudinaryImageId
-        }
+        src={IMAGE_URL + resData.info.cloudinaryImageId}
         alt="name"
       ></img>
       <h3>{resData.info.name}</h3>
