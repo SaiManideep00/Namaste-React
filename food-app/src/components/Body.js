@@ -1,8 +1,8 @@
 import RestaurantCard from "./RestaurantCard";
 import { useEffect, useState } from "react";
 import Shimmer from "./Shimmer";
-
 import SearchIcon from "@mui/icons-material/Search";
+import { Link } from "react-router-dom";
 
 const Body = () => {
   const [listOfRestaurants, setListOfRestaurants] = useState([]);
@@ -13,6 +13,7 @@ const Body = () => {
       "https://corsproxy.io/?https://www.swiggy.com/dapi/restaurants/list/v5?lat=17.406498&lng=78.47724389999999&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING"
     );
     const json = await data.json();
+
     setListOfRestaurants(
       json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants
     );
@@ -23,6 +24,7 @@ const Body = () => {
   useEffect(() => {
     fetchData();
   }, []);
+
   if (listOfRestaurants.length === 0) return <Shimmer></Shimmer>;
   return (
     <div className="body">
@@ -33,13 +35,13 @@ const Body = () => {
           placeholder="search"
           value={searchText}
           onChange={(event) => {
+            console.log(event.target.value);
             setSearchText(event.target.value);
-            console.log(searchText);
-            setFilteredRestaurants(
-              listOfRestaurants.filter((res) =>
-                res.info.name.toLowerCase().includes(searchText.toLowerCase())
-              )
+            const x = listOfRestaurants.filter((res) =>
+              res.info.name.toLowerCase().includes(searchText.toLowerCase())
             );
+            console.log(x);
+            setFilteredRestaurants(x);
           }}
         ></input>
         <button
@@ -68,7 +70,9 @@ const Body = () => {
       </div>
       <div className="res-container">
         {filteredRestaurants.map((res) => (
-          <RestaurantCard key={res.info.id} resData={res} />
+          <Link key={res.info.id} to={"/restaurants/" + res.info.id}>
+            <RestaurantCard resData={res} />
+          </Link>
         ))}
       </div>
     </div>
