@@ -8,6 +8,9 @@ import Header from "./components/Header";
 import Body from "./components/Body";
 import Error from "./components/Error";
 import RestaurantMenu from "./components/RestaurantMenu";
+import { lazy, Suspense } from "react";
+import Shimmer from "./components/Shimmer";
+const Grocery = lazy(() => import("./components/Grocery"));
 const appRouter = createBrowserRouter([
   {
     path: "/",
@@ -24,6 +27,14 @@ const appRouter = createBrowserRouter([
       {
         path: "/about",
         element: <About />,
+      },
+      {
+        path: "/grocery",
+        element: (
+          <Suspense fallback={<Shimmer />}>
+            <Grocery />
+          </Suspense>
+        ),
       },
       {
         path: "/restaurants/:resId",

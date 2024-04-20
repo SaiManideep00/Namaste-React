@@ -3,11 +3,12 @@ import { useEffect, useState } from "react";
 import Shimmer from "./Shimmer";
 import SearchIcon from "@mui/icons-material/Search";
 import { Link } from "react-router-dom";
-
+import useOnlineStatus from "../utils/UseOnlineStatus";
 const Body = () => {
   const [listOfRestaurants, setListOfRestaurants] = useState([]);
   const [filteredRestaurants, setFilteredRestaurants] = useState([]);
   const [searchText, setSearchText] = useState("");
+  const onlineStatus = useOnlineStatus();
   const fetchData = async () => {
     const data = await fetch(
       "https://corsproxy.io/?https://www.swiggy.com/dapi/restaurants/list/v5?lat=17.406498&lng=78.47724389999999&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING"
@@ -26,6 +27,12 @@ const Body = () => {
   }, []);
 
   if (listOfRestaurants.length === 0) return <Shimmer></Shimmer>;
+  if (onlineStatus === false)
+    return (
+      <div>
+        <h1>Looks like you are offline, Check your internet status</h1>
+      </div>
+    );
   return (
     <div className="body">
       <div className="search">
